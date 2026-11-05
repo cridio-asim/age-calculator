@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f7ff">
-  <meta name="description" content="Calculate your exact age in years, months and days with a simple, beautiful age calculator.">
+  <meta name="description" content="Calculate your exact age in years, months and days with a beautiful, easy-to-use age calculator.">
   <title>Age Calculator — Find Your Exact Age</title>
   <link rel="icon" type="image/x-icon" href="images/icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,184 +13,157 @@
   <style>
     :root {
       color-scheme: light;
-      --ink: #18213b;
-      --muted: #7c849d;
-      --primary: #635bff;
-      --primary-dark: #5148e8;
-      --line: #e9ebf5;
-      --surface: #ffffff;
-      --bg: #f5f7ff;
-      --shadow: 0 24px 70px rgba(42, 51, 105, .10);
+      --ink: #18213b; --muted: #7c849d; --primary: #635bff; --primary-dark: #5148e8;
+      --line: #e9ebf5; --surface: #fff; --bg: #f5f7ff; --shadow: 0 24px 70px rgba(42,51,105,.10);
     }
     * { box-sizing: border-box; }
     body {
-      margin: 0;
-      min-height: 100vh;
-      padding: 44px 20px;
-      display: grid;
-      place-items: center;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 12% 12%, rgba(117, 108, 255, .13), transparent 28%),
-        radial-gradient(circle at 88% 84%, rgba(87, 190, 220, .12), transparent 25%),
-        var(--bg);
-      font-family: 'DM Sans', sans-serif;
+      margin: 0; min-height: 100vh; padding: 44px 20px; display: grid; place-items: center; color: var(--ink);
+      background: radial-gradient(circle at 12% 12%,rgba(117,108,255,.13),transparent 28%),
+        radial-gradient(circle at 88% 84%,rgba(87,190,220,.12),transparent 25%),var(--bg);
+      font-family: 'DM Sans',sans-serif;
     }
-    button, input { font: inherit; }
-    .page { width: min(100%, 960px); }
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 25px;
-      padding: 0 5px;
+    button,select { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+    .page { width: min(100%,960px); animation: pageIn .75s cubic-bezier(.2,.75,.25,1) both; }
+    @keyframes pageIn { from { opacity:0; transform:translateY(18px) scale(.99) } to { opacity:1; transform:translateY(0) scale(1) } }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:25px; padding:0 5px; }
+    .brand { display:flex; align-items:center; gap:11px; font-weight:800; letter-spacing:-.4px; }
+    .brand-mark { width:42px; height:42px; display:grid; place-items:center; color:#fff; border-radius:14px;
+      background:linear-gradient(145deg,#817aff,#5148e8); box-shadow:0 8px 18px rgba(99,91,255,.25); }
+    .today-pill { display:inline-flex; align-items:center; gap:8px; padding:9px 13px; border:1px solid #e7e9f5;
+      border-radius:999px; color:#737c98; background:rgba(255,255,255,.72); font-size:12px; font-weight:700; }
+    .today-pill svg { color:var(--primary); }
+    .layout { display:grid; grid-template-columns:1fr 1fr; overflow:visible; border:1px solid rgba(226,229,243,.9);
+      border-radius:28px; background:var(--surface); box-shadow:var(--shadow); }
+    .intro { position:relative; overflow:hidden; min-height:560px; padding:54px 46px; color:#fff;
+      border-radius:27px 0 0 27px; background:linear-gradient(145deg,#716aff 0%,#5c55f0 48%,#4841cf 100%); }
+    .intro::before,.intro::after { content:""; position:absolute; border:1px solid rgba(255,255,255,.13); border-radius:50%; pointer-events:none; }
+    .intro::before { width:330px;height:330px;right:-155px;top:-115px; animation:orbit 24s linear infinite; }
+    .intro::after { width:250px;height:250px;right:-115px;top:-75px; animation:orbit 30s linear infinite reverse; }
+    @keyframes orbit { to { transform:rotate(360deg) } }
+    .eyebrow { display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(255,255,255,.25);
+      border-radius:999px;color:rgba(255,255,255,.9);background:rgba(255,255,255,.10);font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase; }
+    h1 { max-width:360px;margin:27px 0 15px;font:800 clamp(36px,5vw,51px)/1.08 'Manrope',sans-serif;letter-spacing:-2.5px; }
+    .intro-copy { max-width:330px;margin:0;color:rgba(255,255,255,.78);font-size:15px;line-height:1.8; }
+    .illustration { position:absolute;left:42px;right:42px;bottom:40px;height:150px;display:flex;align-items:center;justify-content:center; }
+    .orbit { position:absolute;width:160px;height:160px;border:1px solid rgba(255,255,255,.22);border-radius:50%; }
+    .orbit.two { width:210px;height:105px;transform:rotate(-25deg); }
+    .calendar-art { position:relative;z-index:1;width:112px;height:112px;padding:13px;border:1px solid rgba(255,255,255,.45);
+      border-radius:25px;background:linear-gradient(145deg,rgba(255,255,255,.28),rgba(255,255,255,.10));
+      box-shadow:0 18px 40px rgba(34,30,130,.22);backdrop-filter:blur(8px);transform:rotate(-8deg);animation:float 4s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform:translateY(0) rotate(-8deg) } 50% { transform:translateY(-10px) rotate(-4deg) } }
+    .calendar-top { height:20px;margin:-1px -1px 10px;border-radius:9px 9px 5px 5px;background:rgba(255,255,255,.32); }
+    .calendar-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:6px; }
+    .calendar-grid i { height:12px;border-radius:4px;background:rgba(255,255,255,.58); }
+    .calendar-grid i:nth-child(5) { background:#ffe58d; }
+    .spark { position:absolute;color:#ffe58d;font-size:23px;animation:twinkle 2.5s ease-in-out infinite; }
+    .spark.one { left:19%;top:15px; }.spark.two { right:17%;bottom:8px;font-size:17px;animation-delay:1s; }
+    @keyframes twinkle { 0%,100% { opacity:.5;transform:scale(.8) rotate(0) } 50% { opacity:1;transform:scale(1.2) rotate(18deg) } }
+    .calculator { min-width:0;padding:48px 44px 38px;display:flex;flex-direction:column;justify-content:center; }
+    .section-kicker { margin:0 0 8px;color:var(--primary);font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase; }
+    h2 { margin:0;font:800 27px/1.25 'Manrope',sans-serif;letter-spacing:-.9px; }
+    .form-copy { margin:9px 0 27px;color:var(--muted);font-size:13px;line-height:1.6; }
+    .field-label { display:block;margin-bottom:10px;color:#343d59;font-size:13px;font-weight:700; }
+    .date-picker-wrap { position:relative;z-index:5; }
+    .date-trigger { width:100%;min-height:60px;padding:0 15px;display:flex;align-items:center;gap:12px;text-align:left;
+      border:1.5px solid var(--line);border-radius:14px;background:#fbfcff;color:var(--ink);cursor:pointer;
+      transition:border-color .2s,box-shadow .2s,background .2s,transform .2s; }
+    .date-trigger:hover { border-color:#c9c5ff;background:#fff; }
+    .date-trigger:focus-visible { outline:0;border-color:var(--primary);box-shadow:0 0 0 4px rgba(99,91,255,.12); }
+    .date-trigger[aria-expanded="true"] { border-color:var(--primary);background:#fff;box-shadow:0 0 0 4px rgba(99,91,255,.09); }
+    .date-icon { width:36px;height:36px;flex:0 0 36px;display:grid;place-items:center;border-radius:11px;color:var(--primary);background:#efeeff; }
+    .date-value { min-width:0;flex:1; }
+    .date-value strong { display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:700; }
+    .date-value small { display:block;margin-top:3px;color:#9aa1b5;font-size:10px; }
+    .trigger-chevron { color:#9299ad;transition:transform .2s; }.date-trigger[aria-expanded="true"] .trigger-chevron { transform:rotate(180deg); }
+    .hint { margin:9px 0 0;color:#9aa1b5;font-size:11px; }
+    .calendar-popover { position:absolute;top:calc(100% + 10px);left:0;right:0;padding:15px;z-index:20;
+      border:1px solid #e9eaf5;border-radius:18px;background:#fff;box-shadow:0 22px 55px rgba(39,44,91,.18);
+      transform-origin:top center;animation:calendarIn .2s cubic-bezier(.2,.8,.2,1) both; }
+    .calendar-popover[hidden] { display:none; }
+    @keyframes calendarIn { from { opacity:0;transform:translateY(-8px) scale(.97) } to { opacity:1;transform:translateY(0) scale(1) } }
+    .calendar-toolbar { display:grid;grid-template-columns:36px minmax(0,1fr) minmax(0,1fr) 36px;gap:7px;align-items:center;margin-bottom:13px; }
+    .month-nav { width:36px;height:36px;display:grid;place-items:center;border:1px solid #eff0f7;border-radius:10px;
+      color:#626b85;background:#fff;cursor:pointer;transition:background .2s,color .2s,transform .2s; }
+    .month-nav:hover { color:var(--primary);background:#f3f2ff;transform:translateY(-1px); }
+    .calendar-select { min-width:0;width:100%;height:36px;padding:0 7px;border:1px solid #eff0f7;border-radius:9px;
+      color:#343d59;background:#fbfcff;font-size:12px;font-weight:700;outline:0;cursor:pointer; }
+    .calendar-select:focus { border-color:var(--primary); }
+    .weekdays,.calendar-days { display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px; }
+    .weekdays { margin-bottom:5px; }
+    .weekdays span { padding:7px 0;color:#a0a6b8;text-align:center;font-size:10px;font-weight:800; }
+    .day { aspect-ratio:1;min-width:0;display:grid;place-items:center;border:0;border-radius:9px;color:#4a526b;
+      background:transparent;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s,color .15s,transform .15s; }
+    .day:hover:not(:disabled) { color:var(--primary);background:#f0efff;transform:scale(1.08); }
+    .day:focus-visible { outline:2px solid var(--primary);outline-offset:1px; }
+    .day.today { color:var(--primary);box-shadow:inset 0 0 0 1px #c9c5ff;font-weight:800; }
+    .day.selected { color:#fff;background:var(--primary);box-shadow:0 4px 10px rgba(99,91,255,.25); }
+    .day:disabled { color:#d8dbe6;cursor:not-allowed; }
+    .calendar-bottom { display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;padding-top:11px;border-top:1px solid #f0f1f7; }
+    .calendar-bottom button { padding:6px 8px;border:0;border-radius:7px;color:var(--primary);background:transparent;font-size:11px;font-weight:800;cursor:pointer; }
+    .calendar-bottom button:hover { background:#f3f2ff; }
+    .calculate { position:relative;overflow:hidden;width:100%;height:56px;margin-top:21px;display:flex;align-items:center;justify-content:center;gap:10px;
+      border:0;border-radius:13px;color:#fff;cursor:pointer;background:linear-gradient(105deg,#7069ff,#554de9);
+      box-shadow:0 10px 20px rgba(99,91,255,.22);font-size:14px;font-weight:800;
+      transition:transform .2s,box-shadow .2s,filter .2s; }
+    .calculate:hover { transform:translateY(-2px);box-shadow:0 14px 24px rgba(99,91,255,.28);filter:saturate(1.1); }
+    .calculate:active { transform:translateY(0) scale(.99); }
+    .calculate:disabled { opacity:.75;cursor:wait; }
+    .button-ripple { position:absolute;border-radius:50%;background:rgba(255,255,255,.35);transform:scale(0);animation:ripple .55s linear;pointer-events:none; }
+    @keyframes ripple { to { transform:scale(4);opacity:0 } }
+    .message { min-height:19px;margin:10px 0 0;color:#d34b62;font-size:12px; }
+    .result { margin-top:14px;padding-top:19px;border-top:1px solid var(--line); }
+    .result-head { display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px; }
+    .result-title { margin:0;color:#343d59;font-size:12px;font-weight:800; }
+    .result-status { color:#9299ad;font-size:9px;font-weight:800;letter-spacing:.5px; }
+    .result-status.complete { color:#2b9b72; }
+    .result-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:9px; }
+    .result-card { min-width:0;padding:14px 7px 12px;text-align:center;border:1px solid #eceeff;border-radius:13px;background:#f8f8ff;
+      transition:transform .25s,box-shadow .25s,border-color .25s; }
+    .result-card strong { display:block;color:var(--primary);font:800 29px/1.2 'Manrope',sans-serif;letter-spacing:-1px;font-variant-numeric:tabular-nums; }
+    .result-card span { display:block;margin-top:5px;color:#8b91a8;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase; }
+    .result-grid.animate .result-card { animation:resultPop .5s cubic-bezier(.2,.8,.2,1) both; }
+    .result-grid.animate .result-card:nth-child(2) { animation-delay:.08s; }
+    .result-grid.animate .result-card:nth-child(3) { animation-delay:.16s; }
+    @keyframes resultPop { from { opacity:.35;transform:translateY(10px) scale(.96) } to { opacity:1;transform:translateY(0) scale(1) } }
+    .result-note { margin:12px 0 0;color:#9aa1b5;font-size:11px;line-height:1.5;text-align:center; }
+    .footer { margin-top:20px;color:#a0a6b8;font-size:11px;text-align:center; }
+    @media (max-width:720px) {
+      body { padding:24px 15px; }
+      .layout { grid-template-columns:1fr;border-radius:23px; }
+      .intro { min-height:285px;padding:34px 29px;border-radius:22px 22px 0 0; }
+      h1 { max-width:420px;margin:20px 0 10px;font-size:38px; }
+      .intro-copy { max-width:390px;font-size:13px; }
+      .illustration { left:auto;right:25px;bottom:14px;width:120px;height:115px;opacity:.8; }
+      .calendar-art { transform:scale(.72) rotate(-8deg); }
+      .orbit { width:115px;height:115px; }.orbit.two { width:145px;height:75px; }
+      .spark.one { left:0;top:5px; }.spark.two { right:0;bottom:0; }
+      .calculator { padding:34px 28px 30px; }
+      .form-copy { margin-bottom:23px; }
+      .calendar-popover { max-width:100%; }
     }
-    .brand { display: flex; align-items: center; gap: 11px; font-weight: 800; letter-spacing: -.4px; }
-    .brand-mark {
-      width: 42px; height: 42px; display: grid; place-items: center;
-      color: #fff; border-radius: 14px;
-      background: linear-gradient(145deg, #817aff, #5148e8);
-      box-shadow: 0 8px 18px rgba(99, 91, 255, .25);
+    @media (max-width:390px) {
+      .today-pill { font-size:10px;padding:8px 9px; }.brand { font-size:14px; }
+      .intro { min-height:300px; }.intro-copy { max-width:245px; }
+      .illustration { right:9px;bottom:3px;opacity:.55; }
+      .calculator { padding-right:20px;padding-left:20px; }
+      .result-grid { gap:6px; }.result-card { padding-right:4px;padding-left:4px; }
+      .result-card strong { font-size:25px; }.calendar-popover { padding:11px; }
     }
-    .today-pill {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 9px 13px; border: 1px solid #e7e9f5; border-radius: 999px;
-      color: #737c98; background: rgba(255,255,255,.72); font-size: 12px; font-weight: 700;
+    @media (prefers-reduced-motion:reduce) {
+      *,*::before,*::after { animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important; }
     }
-    .today-pill svg { color: var(--primary); }
-    .layout {
-      display: grid; grid-template-columns: 1fr 1fr; overflow: hidden;
-      border: 1px solid rgba(226, 229, 243, .9); border-radius: 28px;
-      background: var(--surface); box-shadow: var(--shadow);
-    }
-    .intro {
-      position: relative; overflow: hidden; min-height: 530px;
-      padding: 54px 46px; color: #fff;
-      background: linear-gradient(145deg, #716aff 0%, #5c55f0 48%, #4841cf 100%);
-    }
-    .intro::before, .intro::after {
-      content: ""; position: absolute; border: 1px solid rgba(255,255,255,.13); border-radius: 50%;
-      pointer-events: none;
-    }
-    .intro::before { width: 330px; height: 330px; right: -155px; top: -115px; }
-    .intro::after { width: 250px; height: 250px; right: -115px; top: -75px; }
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px;
-      border: 1px solid rgba(255,255,255,.25); border-radius: 999px;
-      color: rgba(255,255,255,.9); background: rgba(255,255,255,.10);
-      font-size: 11px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;
-    }
-    h1 {
-      max-width: 360px; margin: 27px 0 15px;
-      font: 800 clamp(36px, 5vw, 51px)/1.08 'Manrope', sans-serif;
-      letter-spacing: -2.5px;
-    }
-    .intro-copy { max-width: 330px; margin: 0; color: rgba(255,255,255,.78); font-size: 15px; line-height: 1.8; }
-    .illustration {
-      position: absolute; left: 42px; right: 42px; bottom: 40px; height: 150px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .orbit {
-      position: absolute; width: 160px; height: 160px; border: 1px solid rgba(255,255,255,.22);
-      border-radius: 50%;
-    }
-    .orbit.two { width: 210px; height: 105px; transform: rotate(-25deg); }
-    .calendar-art {
-      position: relative; z-index: 1; width: 112px; height: 112px; padding: 13px;
-      border: 1px solid rgba(255,255,255,.45); border-radius: 25px;
-      background: linear-gradient(145deg, rgba(255,255,255,.28), rgba(255,255,255,.10));
-      box-shadow: 0 18px 40px rgba(34, 30, 130, .22); backdrop-filter: blur(8px);
-      transform: rotate(-8deg);
-    }
-    .calendar-top { height: 20px; margin: -1px -1px 10px; border-radius: 9px 9px 5px 5px; background: rgba(255,255,255,.32); }
-    .calendar-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
-    .calendar-grid i { height: 12px; border-radius: 4px; background: rgba(255,255,255,.58); }
-    .calendar-grid i:nth-child(5) { background: #ffe58d; }
-    .spark { position: absolute; color: #ffe58d; font-size: 23px; }
-    .spark.one { left: 19%; top: 15px; }
-    .spark.two { right: 17%; bottom: 8px; font-size: 17px; }
-    .calculator {
-      padding: 51px 47px 42px; display: flex; flex-direction: column; justify-content: center;
-    }
-    .section-kicker { margin: 0 0 8px; color: var(--primary); font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; }
-    h2 { margin: 0; font: 800 27px/1.25 'Manrope', sans-serif; letter-spacing: -.9px; }
-    .form-copy { margin: 9px 0 29px; color: var(--muted); font-size: 13px; line-height: 1.6; }
-    .field-label { display: block; margin-bottom: 10px; color: #343d59; font-size: 13px; font-weight: 700; }
-    .date-field { position: relative; }
-    input[type="date"] {
-      width: 100%; height: 57px; padding: 0 16px; outline: none;
-      border: 1.5px solid var(--line); border-radius: 13px;
-      color: var(--ink); background: #fbfcff; font-size: 14px; font-weight: 600;
-      transition: border-color .2s, box-shadow .2s, background .2s;
-    }
-    input[type="date"]:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px rgba(99,91,255,.10); }
-    .hint { margin: 9px 0 0; color: #9aa1b5; font-size: 11px; }
-    .calculate {
-      width: 100%; height: 56px; margin-top: 22px; display: flex; align-items: center; justify-content: center; gap: 10px;
-      border: 0; border-radius: 13px; color: #fff; cursor: pointer;
-      background: linear-gradient(105deg, #7069ff, #554de9);
-      box-shadow: 0 10px 20px rgba(99,91,255,.22);
-      font-size: 14px; font-weight: 800; transition: transform .2s, box-shadow .2s, filter .2s;
-    }
-    .calculate:hover { transform: translateY(-2px); box-shadow: 0 14px 24px rgba(99,91,255,.28); filter: saturate(1.1); }
-    .calculate:active { transform: translateY(0); }
-    .message { min-height: 19px; margin: 11px 0 0; color: #d34b62; font-size: 12px; }
-    .result { margin-top: 17px; padding-top: 21px; border-top: 1px solid var(--line); }
-    .result-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 13px; }
-    .result-title { margin: 0; color: #343d59; font-size: 12px; font-weight: 800; }
-    .result-status { color: #9299ad; font-size: 10px; font-weight: 700; }
-    .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
-    .result-card {
-      min-width: 0; padding: 15px 8px 13px; text-align: center;
-      border: 1px solid #eceeff; border-radius: 13px; background: #f8f8ff;
-    }
-    .result-card strong { display: block; color: var(--primary); font: 800 29px/1.2 'Manrope',sans-serif; letter-spacing: -1px; }
-    .result-card span { display: block; margin-top: 5px; color: #8b91a8; font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
-    .result-note { margin: 13px 0 0; color: #9aa1b5; font-size: 11px; text-align: center; }
-    .footer { margin-top: 20px; color: #a0a6b8; font-size: 11px; text-align: center; }
-    @media (max-width: 720px) {
-      body { padding: 24px 15px; }
-      .layout { grid-template-columns: 1fr; border-radius: 23px; }
-      .intro { min-height: 285px; padding: 34px 29px; }
-      h1 { max-width: 420px; margin: 20px 0 10px; font-size: 38px; }
-      .intro-copy { max-width: 390px; font-size: 13px; }
-      .illustration { left: auto; right: 25px; bottom: 14px; width: 120px; height: 115px; opacity: .8; }
-      .calendar-art { transform: scale(.72) rotate(-8deg); }
-      .orbit { width: 115px; height: 115px; }
-      .orbit.two { width: 145px; height: 75px; }
-      .spark.one { left: 0; top: 5px; }
-      .spark.two { right: 0; bottom: 0; }
-      .calculator { padding: 34px 28px 30px; }
-      .form-copy { margin-bottom: 23px; }
-    }
-    @media (max-width: 390px) {
-      .today-pill { font-size: 10px; padding: 8px 9px; }
-      .brand { font-size: 14px; }
-      .intro { min-height: 300px; }
-      .intro-copy { max-width: 245px; }
-      .illustration { right: 9px; bottom: 3px; opacity: .55; }
-      .calculator { padding-right: 20px; padding-left: 20px; }
-      .result-grid { gap: 6px; }
-      .result-card { padding-right: 4px; padding-left: 4px; }
-      .result-card strong { font-size: 25px; }
-    }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
   </style>
 </head>
 <body>
   <main class="page">
     <header class="topbar">
       <div class="brand">
-        <span class="brand-mark" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 3v4M16 3v4M4 10h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="m9 15 2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </span>
+        <span class="brand-mark" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 3v4M16 3v4M4 10h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="m9 15 2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         <span>Age Calculator</span>
       </div>
-      <div class="today-pill">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <span id="today-label">Today</span>
-      </div>
+      <div class="today-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="today-label">Today</span></div>
     </header>
 
     <section class="layout" aria-label="Age calculator">
@@ -198,37 +171,43 @@
         <span class="eyebrow"><span aria-hidden="true">✦</span> Your time, beautifully told</span>
         <h1>Every year tells a story.</h1>
         <p class="intro-copy">Find out exactly how long you’ve been on this journey. Just enter your date of birth and let’s do the math.</p>
-        <div class="illustration" aria-hidden="true">
-          <span class="orbit"></span><span class="orbit two"></span>
-          <span class="spark one">✧</span><span class="spark two">✦</span>
-          <div class="calendar-art"><div class="calendar-top"></div><div class="calendar-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-        </div>
+        <div class="illustration" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="spark one">✧</span><span class="spark two">✦</span><div class="calendar-art"><div class="calendar-top"></div><div class="calendar-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>
       </div>
 
       <div class="calculator">
         <p class="section-kicker">Quick &amp; accurate</p>
         <h2>Calculate your age</h2>
-        <p class="form-copy">Select your birthday to see your age down to the exact day.</p>
+        <p class="form-copy">Choose your birthday to see your age down to the exact day.</p>
 
         <form id="age-form" novalidate>
-          <label class="field-label" for="date-input">Date of birth</label>
-          <div class="date-field">
-            <input type="date" id="date-input" name="birthdate" required aria-describedby="date-hint">
+          <label class="field-label" id="birth-label">Date of birth</label>
+          <div class="date-picker-wrap" id="date-picker-wrap">
+            <button class="date-trigger" id="date-trigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="calendar-popover" aria-labelledby="birth-label date-display">
+              <span class="date-icon" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="16" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M8 3v4M16 3v4M4 10h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+              <span class="date-value"><strong id="date-display">Choose your date of birth</strong><small id="date-subtext">Tap to open calendar</small></span>
+              <svg class="trigger-chevron" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m7 10 5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+
+            <div class="calendar-popover" id="calendar-popover" role="dialog" aria-label="Choose your date of birth" hidden>
+              <div class="calendar-toolbar">
+                <button class="month-nav" id="prev-month" type="button" aria-label="Previous month"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <select class="calendar-select" id="month-select" aria-label="Select month"></select>
+                <select class="calendar-select" id="year-select" aria-label="Select year"></select>
+                <button class="month-nav" id="next-month" type="button" aria-label="Next month"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              </div>
+              <div class="weekdays" aria-hidden="true"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
+              <div class="calendar-days" id="calendar-days" role="grid" aria-label="Calendar dates"></div>
+              <div class="calendar-bottom"><button id="clear-date" type="button">Clear date</button><button id="close-calendar" type="button">Close</button></div>
+            </div>
           </div>
-          <p class="hint" id="date-hint">Your date stays private and is only used for this calculation.</p>
-          <button class="calculate" type="submit">
-            Calculate my age
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
+          <p class="hint">Your date stays private and is only used for this calculation.</p>
+          <button class="calculate" id="calculate-button" type="submit">Calculate my age <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <p class="message" id="message" role="status" aria-live="polite"></p>
         </form>
 
         <section class="result" aria-live="polite">
-          <div class="result-head">
-            <p class="result-title">Your age is</p>
-            <span class="result-status" id="result-status">WAITING FOR DATE</span>
-          </div>
-          <div class="result-grid">
+          <div class="result-head"><p class="result-title">Your age is</p><span class="result-status" id="result-status">WAITING FOR DATE</span></div>
+          <div class="result-grid" id="result-grid">
             <div class="result-card"><strong id="years">—</strong><span>Years</span></div>
             <div class="result-card"><strong id="months">—</strong><span>Months</span></div>
             <div class="result-card"><strong id="days">—</strong><span>Days</span></div>
@@ -241,92 +220,205 @@
   </main>
 
   <script>
-    const dateInput = document.getElementById('date-input');
-    const form = document.getElementById('age-form');
-    const message = document.getElementById('message');
-    const resultStatus = document.getElementById('result-status');
-    const resultNote = document.getElementById('result-note');
+    const $ = (id) => document.getElementById(id);
+    const form = $('age-form');
+    const pickerWrap = $('date-picker-wrap');
+    const trigger = $('date-trigger');
+    const popover = $('calendar-popover');
+    const monthSelect = $('month-select');
+    const yearSelect = $('year-select');
+    const daysGrid = $('calendar-days');
+    const message = $('message');
+    const resultGrid = $('result-grid');
+    const today = new Date();
+    const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const todayKey = dateKey(todayDate);
+    let selectedDate = null;
+    let viewYear = today.getFullYear();
+    let viewMonth = today.getMonth();
 
-    function localDateString(date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return year + '-' + month + '-' + day;
+    function dateKey(date) {
+      return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-');
+    }
+    function fromKey(key) {
+      if (!key) return null;
+      const [year, month, day] = key.split('-').map(Number);
+      const date = new Date(year, month - 1, day);
+      return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day ? date : null;
+    }
+    function sameDay(a, b) { return !!a && !!b && dateKey(a) === dateKey(b); }
+    function daysInMonth(year, month) { return new Date(year, month + 1, 0).getDate(); }
+
+    function setupSelects() {
+      const monthNames = Array.from({ length: 12 }, (_, i) => new Intl.DateTimeFormat(undefined, { month: 'long' }).format(new Date(2020, i, 1)));
+      monthSelect.innerHTML = monthNames.map((name, i) => '<option value="' + i + '">' + name + '</option>').join('');
+      const options = [];
+      for (let year = today.getFullYear(); year >= 1900; year--) options.push('<option value="' + year + '">' + year + '</option>');
+      yearSelect.innerHTML = options.join('');
     }
 
-    function parseLocalDate(value) {
-      const parts = value.split('-').map(Number);
-      if (parts.length !== 3 || parts.some(Number.isNaN)) return null;
-      const date = new Date(parts[0], parts[1] - 1, parts[2]);
-      if (date.getFullYear() !== parts[0] || date.getMonth() !== parts[1] - 1 || date.getDate() !== parts[2]) return null;
-      return date;
+    function renderCalendar() {
+      monthSelect.value = String(viewMonth);
+      yearSelect.value = String(viewYear);
+      $('prev-month').disabled = viewYear === 1900 && viewMonth === 0;
+      $('next-month').disabled = viewYear === today.getFullYear() && viewMonth === today.getMonth();
+      $('prev-month').style.opacity = $('prev-month').disabled ? '.35' : '1';
+      $('next-month').style.opacity = $('next-month').disabled ? '.35' : '1';
+
+      const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+      const count = daysInMonth(viewYear, viewMonth);
+      const cells = [];
+      for (let i = 0; i < firstDay; i++) cells.push('<span aria-hidden="true"></span>');
+      for (let day = 1; day <= count; day++) {
+        const date = new Date(viewYear, viewMonth, day);
+        const isFuture = date > todayDate;
+        const isSelected = sameDay(date, selectedDate);
+        const isToday = sameDay(date, todayDate);
+        const classes = ['day', isSelected ? 'selected' : '', isToday ? 'today' : ''].filter(Boolean).join(' ');
+        cells.push('<button class="' + classes + '" type="button" role="gridcell" data-day="' + day + '"' +
+          (isFuture ? ' disabled aria-disabled="true"' : '') +
+          (isSelected ? ' aria-pressed="true"' : ' aria-pressed="false"') +
+          ' aria-label="' + new Intl.DateTimeFormat(undefined, { dateStyle: 'full' }).format(date) + '">' + day + '</button>');
+      }
+      daysGrid.innerHTML = cells.join('');
+      daysGrid.querySelectorAll('[data-day]').forEach(button => {
+        button.addEventListener('click', () => chooseDate(new Date(viewYear, viewMonth, Number(button.dataset.day))));
+      });
     }
 
-    function daysInMonth(year, monthIndex) {
-      return new Date(year, monthIndex + 1, 0).getDate();
+    function updateDateDisplay() {
+      $('date-display').textContent = selectedDate
+        ? new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'long', day: 'numeric' }).format(selectedDate)
+        : 'Choose your date of birth';
+      $('date-subtext').textContent = selectedDate ? 'Date selected · Tap to change' : 'Tap to open calendar';
+      trigger.classList.toggle('has-date', !!selectedDate);
     }
 
-    function calculateAge(birth, today) {
-      let years = today.getFullYear() - birth.getFullYear();
-      let months = today.getMonth() - birth.getMonth();
-      let days = today.getDate() - birth.getDate();
+    function openCalendar() {
+      if (!popover.hidden) return;
+      if (selectedDate) { viewYear = selectedDate.getFullYear(); viewMonth = selectedDate.getMonth(); }
+      renderCalendar();
+      popover.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+      $('month-select').focus({ preventScroll: true });
+    }
+    function closeCalendar(returnFocus) {
+      if (popover.hidden) return;
+      popover.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+      if (returnFocus) trigger.focus();
+    }
+    function chooseDate(date) {
+      if (date > todayDate) return;
+      selectedDate = date;
+      updateDateDisplay();
+      renderCalendar();
+      message.textContent = '';
+      closeCalendar(false);
+      trigger.focus();
+    }
+    function moveMonth(amount) {
+      const next = new Date(viewYear, viewMonth + amount, 1);
+      if (next < new Date(1900, 0, 1) || next > new Date(today.getFullYear(), today.getMonth(), 1)) return;
+      viewYear = next.getFullYear(); viewMonth = next.getMonth(); renderCalendar();
+    }
 
+    $('prev-month').addEventListener('click', () => moveMonth(-1));
+    $('next-month').addEventListener('click', () => moveMonth(1));
+    monthSelect.addEventListener('change', () => { viewMonth = Number(monthSelect.value); renderCalendar(); });
+    yearSelect.addEventListener('change', () => { viewYear = Number(yearSelect.value); if (viewYear === today.getFullYear() && viewMonth > today.getMonth()) viewMonth = today.getMonth(); renderCalendar(); });
+    $('clear-date').addEventListener('click', () => {
+      selectedDate = null; updateDateDisplay(); message.textContent = ''; resetResult(); renderCalendar(); closeCalendar(true);
+    });
+    $('close-calendar').addEventListener('click', () => closeCalendar(true));
+    trigger.addEventListener('click', () => popover.hidden ? openCalendar() : closeCalendar(false));
+    document.addEventListener('pointerdown', event => {
+      if (!popover.hidden && !pickerWrap.contains(event.target)) closeCalendar(false);
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !popover.hidden) closeCalendar(true);
+    });
+
+    function calculateAge(birth, current) {
+      let years = current.getFullYear() - birth.getFullYear();
+      let months = current.getMonth() - birth.getMonth();
+      let days = current.getDate() - birth.getDate();
       if (days < 0) {
-        const previousMonth = (today.getMonth() + 11) % 12;
-        const previousMonthYear = today.getMonth() === 0 ? today.getFullYear() - 1 : today.getFullYear();
+        const previousMonth = (current.getMonth() + 11) % 12;
+        const previousMonthYear = current.getMonth() === 0 ? current.getFullYear() - 1 : current.getFullYear();
         days += daysInMonth(previousMonthYear, previousMonth);
         months--;
       }
-      if (months < 0) {
-        months += 12;
-        years--;
-      }
+      if (months < 0) { months += 12; years--; }
       return { years, months, days };
     }
-
+    function animateNumber(element, target) {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) { element.textContent = target; return; }
+      const duration = 650;
+      const start = performance.now();
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 4);
+        element.textContent = Math.round(target * eased);
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
     function showResult(age) {
-      document.getElementById('years').textContent = age.years;
-      document.getElementById('months').textContent = age.months;
-      document.getElementById('days').textContent = age.days;
-      resultStatus.textContent = 'CALCULATION COMPLETE';
-      resultNote.textContent = 'That’s ' + age.years + ' years, ' + age.months + ' months and ' + age.days + ' days so far.';
+      resultGrid.classList.remove('animate');
+      void resultGrid.offsetWidth;
+      resultGrid.classList.add('animate');
+      animateNumber($('years'), age.years);
+      animateNumber($('months'), age.months);
+      animateNumber($('days'), age.days);
+      $('result-status').textContent = '✓ CALCULATION COMPLETE';
+      $('result-status').classList.add('complete');
+      $('result-note').textContent = 'That’s ' + age.years + ' years, ' + age.months + ' months and ' + age.days + ' days so far.';
     }
-
     function resetResult() {
-      document.getElementById('years').textContent = '—';
-      document.getElementById('months').textContent = '—';
-      document.getElementById('days').textContent = '—';
-      resultStatus.textContent = 'WAITING FOR DATE';
-      resultNote.textContent = 'Your exact age will appear here.';
+      $('years').textContent = '—'; $('months').textContent = '—'; $('days').textContent = '—';
+      $('result-status').textContent = 'WAITING FOR DATE'; $('result-status').classList.remove('complete');
+      $('result-note').textContent = 'Your exact age will appear here.';
+      resultGrid.classList.remove('animate');
+    }
+    function addRipple(event) {
+      const button = $('calculate-button');
+      const rect = button.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      const size = Math.max(rect.width, rect.height);
+      ripple.className = 'button-ripple';
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = (event.clientX - rect.left - size / 2) + 'px';
+      ripple.style.top = (event.clientY - rect.top - size / 2) + 'px';
+      button.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
     }
 
-    const today = new Date();
-    dateInput.max = localDateString(today);
-    document.getElementById('today-label').textContent = new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric' }).format(today);
+    $('today-label').textContent = new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric' }).format(todayDate);
+    setupSelects();
+    updateDateDisplay();
+    renderCalendar();
 
-    form.addEventListener('submit', function(event) {
+    form.addEventListener('submit', event => {
       event.preventDefault();
       message.textContent = '';
-      const value = dateInput.value;
-      if (!value) {
-        message.textContent = 'Please select your date of birth first.';
-        dateInput.focus();
+      if (!selectedDate) {
+        message.textContent = 'Please choose your date of birth first.';
+        trigger.focus();
+        trigger.classList.add('date-error');
+        setTimeout(() => trigger.classList.remove('date-error'), 500);
         resetResult();
         return;
       }
-      const birth = parseLocalDate(value);
-      const currentDate = new Date();
-      if (!birth || birth > new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())) {
-        message.textContent = 'Please enter a valid date that is not in the future.';
+      if (selectedDate > todayDate) {
+        message.textContent = 'Please choose a date that is not in the future.';
         resetResult();
         return;
       }
-      showResult(calculateAge(birth, new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())));
+      showResult(calculateAge(selectedDate, todayDate));
     });
-
-    dateInput.addEventListener('change', function() {
-      message.textContent = '';
-    });
+    $('calculate-button').addEventListener('click', addRipple);
   </script>
 </body>
 </html>
